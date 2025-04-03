@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-// import { ServeStaticModule } from '@nestjs/serve-static';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule } from '@nestjs/config';
-// import * as path from 'node:path';
+import * as path from 'node:path';
 
 import { configProvider } from './app.config.provider';
 import { FilmsController } from './films/films.controller';
@@ -14,6 +14,9 @@ import { FilmsService } from './films/films.service';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '..', 'public/content/afisha'), // Папка, откуда раздаются файлы
     }),
     // @todo: Добавьте раздачу статических файлов из public
   ],
