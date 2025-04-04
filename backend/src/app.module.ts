@@ -17,8 +17,8 @@ import { FILM_REPOSITORY } from './repository/filmRepository';
       cache: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'public', 'content', 'afisha'), // Путь к папке с файлами
-      serveRoot: '/content/afisha', // Статика будет доступна по этому пути
+      rootPath: path.join(__dirname, '..', 'public', 'content', 'afisha'),
+      serveRoot: '/content/afisha',
     }),
   ],
   controllers: [FilmsController, OrderController],
