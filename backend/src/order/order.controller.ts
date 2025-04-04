@@ -1,9 +1,17 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { OrderDTO } from './dto/order.dto';
+import { OrderService } from './order.service';
 
 @Controller('order')
 export class OrderController {
+  constructor(private readonly orderService: OrderService) {}
+
   @Post()
-  create(): string {
-    return 'Этот метод создаёт новый фильм';
+  create(@Body() body: OrderDTO) {
+    console.log(body);
+
+    const orderSuccess = this.orderService.createOrder(body);
+
+    return orderSuccess;
   }
 }

@@ -60,3 +60,8 @@ export interface FilmsAnswer {
   total: number;
   items: FilmDto[];
 }
+
+export interface ScheduleAnswer {
+  total: number;
+  items: Schedule[];
+}

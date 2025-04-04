@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Film } from 'src/films/dto/films.dto';
+import { Film, Schedule } from 'src/films/dto/films.dto';
 import { FilmRepository } from '../filmRepository';
 
 @Injectable()
@@ -583,10 +583,10 @@ export class MemoryRepository implements FilmRepository {
     },
   ];
 
-  findById(id: string): Film {
+  findById(id: string): Schedule[] {
     const film = this.films.find((item) => item.id === id);
     if (film) {
-      return film;
+      return film.schedule;
     }
     return undefined as any;
   }
@@ -595,4 +595,6 @@ export class MemoryRepository implements FilmRepository {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return this.films;
   }
+
+  takeSeat(film: string, session: string, row: number, seat: number) {}
 }

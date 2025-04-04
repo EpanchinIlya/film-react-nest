@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import 'dotenv/config';
-import * as path from 'node:path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,7 +8,6 @@ async function bootstrap() {
   app.enableCors();
   app.listen(3000, () => {
     console.log(`Сервер запущен на порту 3000`);
-    console.log(path.join(__dirname, '..', 'public', 'content', 'afisha'));
   });
 }
 bootstrap();

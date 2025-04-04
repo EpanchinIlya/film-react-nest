@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { FilmsService } from './films.service';
-import { FilmsAnswer } from './dto/films.dto';
+import { FilmsAnswer, ScheduleAnswer } from './dto/films.dto';
 
 @Controller('films/')
 export class FilmsController {
@@ -8,20 +8,14 @@ export class FilmsController {
 
   @Get()
   findAll(): FilmsAnswer {
-    const films = this.filmsService.findAllFilms();
-    return {
-      total: films.length,
-      items: films,
-    };
+    return this.filmsService.findAllFilms();
   }
 
   @Get(':id/schedule')
-  findById(): string {
-    return 'Этот метод возвращает список фильмов';
-  }
+  findById(@Param('id') id: string): ScheduleAnswer {
+    const schedule = this.filmsService.findFilmById(id);
 
-  //   @Post() // Обрабатывает POST-запрос на /films
-  //   create(): string {
-  //     return 'Этот метод создаёт новый фильм';
-  //   }
+    if (schedule) return schedule;
+    throw new NotFoundException(`The film  is not showing in the cinema.`);
+  }
 }
