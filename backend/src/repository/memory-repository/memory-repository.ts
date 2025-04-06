@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Film, Schedule } from 'src/films/dto/films.dto';
 import { FilmRepository } from '../filmRepository';
 
+
+
 @Injectable()
 export class MemoryRepository implements FilmRepository {
   private films = [
@@ -596,5 +598,14 @@ export class MemoryRepository implements FilmRepository {
     return this.films;
   }
 
-  takeSeat(film: string, session: string, row: number, seat: number) {}
+  takeSeat(filmId: string, sessionId: string, row: number, seat: number){
+    const film = this.films.find(f => f.id === filmId);
+    const session = film.schedule.find(s => s.id === sessionId);
+    const seatKey = `${row}:${seat}`;
+    console.log(seatKey);  
+    session.taken.push(seatKey);
+    
+    
+
+  }
 }
