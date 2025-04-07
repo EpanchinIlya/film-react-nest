@@ -4,6 +4,7 @@ export const FILM_REPOSITORY = Symbol('FILM_REPOSITORY');
 
 export interface FilmRepository {
   findById(id: string): Schedule[] | undefined;
-  findAll(): FilmDto[];
+  // findAll(): FilmDto[] | Promise<FilmDto[]>;
+  findAll(): Promise<FilmDto[]>;
   takeSeat(film: string, session: string, row: number, seat: number);
 }

@@ -7,11 +7,15 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  create(@Body() body: OrderDTO) {
+  async create(@Body() body: OrderDTO) {
     console.log(body);
 
-    const orderSuccess = this.orderService.createOrder(body);
-
-    return orderSuccess;
+    try {
+      const orderSuccess = await this.orderService.createOrder(body); // Ждем завершения асинхронного метода
+      return orderSuccess; // Возвращаем успешный результат
+    } catch (error) {
+      console.error('Error creating order:', error);
+      throw error; // Выбрасываем ошибку, если что-то пошло не так
+    }
   }
 }

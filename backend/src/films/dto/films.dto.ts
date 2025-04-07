@@ -52,7 +52,11 @@ export interface Schedule {
   taken: any[];
 }
 
-export interface Film extends Omit<FilmDto, 'schedule'> {
+// export interface Film extends Omit<FilmDto, 'schedule'> {
+//   schedule: Schedule[];
+// }
+
+export interface FilmWithScheduleDto extends FilmDto {
   schedule: Schedule[];
 }
 

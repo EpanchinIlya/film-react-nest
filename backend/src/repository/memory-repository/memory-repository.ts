@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { FilmDto, Schedule } from 'src/films/dto/films.dto';
-import { FilmRepository } from '../filmRepository';
 
 @Injectable()
-export class MemoryRepository implements FilmRepository {
+export class MemoryRepository {
   private films = [
     {
       id: '0e33c7f6-27a7-4aa0-8e61-65d7e5effecf',

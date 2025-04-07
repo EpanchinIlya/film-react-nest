@@ -7,15 +7,27 @@ export class FilmsController {
   constructor(private readonly filmsService: FilmsService) {}
 
   @Get()
-  findAll(): FilmsAnswer {
-    return this.filmsService.findAllFilms();
+  async findAll(): Promise<FilmsAnswer> {
+    try {
+      const films = await this.filmsService.findAllFilms(); // Ожидаем получения фильмов
+      return films;
+    } catch (error) {
+      throw new NotFoundException('Films not found.');
+    }
   }
 
   @Get(':id/schedule')
-  findById(@Param('id') id: string): ScheduleAnswer {
-    const schedule = this.filmsService.findFilmById(id);
+  async findById(@Param('id') id: string): Promise<ScheduleAnswer> {
+    try {
+      const schedule = await this.filmsService.findFilmById(id); // Ожидаем получения расписания фильма
 
-    if (schedule) return schedule;
-    throw new NotFoundException(`The film  is not showing in the cinema.`);
+      if (!schedule) {
+        throw new NotFoundException(`The film is not showing in the cinema.`);
+      }
+
+      return schedule;
+    } catch (error) {
+      throw new NotFoundException(`The film with ID ${id} not found.`);
+    }
   }
 }

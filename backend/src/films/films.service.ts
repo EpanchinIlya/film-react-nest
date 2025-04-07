@@ -1,30 +1,48 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { FilmsAnswer, ScheduleAnswer } from './dto/films.dto';
-import { FILM_REPOSITORY, FilmRepository } from 'src/repository/filmRepository';
+import { FILM_REPOSITORY } from 'src/repository/filmRepository';
+import { MongoRepository } from 'src/repository/mongo-repository/mongo-repository';
 
 @Injectable()
 export class FilmsService {
   constructor(
-    @Inject(FILM_REPOSITORY) private readonly filmRepository: FilmRepository,
+    @Inject(FILM_REPOSITORY) private readonly mongoRepository: MongoRepository,
   ) {}
 
-  findAllFilms(): FilmsAnswer {
-    const films = this.filmRepository.findAll();
-
-    return {
-      total: films.length,
-      items: films,
-    };
+  // Асинхронная функция для получения всех фильмов
+  async findAllFilms(): Promise<FilmsAnswer> {
+    try {
+      const films = await this.mongoRepository.findAll(); // Ждем результат от mongoRepository
+      return {
+        total: films.length, // Общее количество фильмов
+        items: films, // Сами фильмы
+      };
+    } catch (error) {
+      console.error('Error fetching films:', error);
+      return {
+        total: 0,
+        items: [], // Если ошибка, возвращаем пустой список фильмов
+      };
+    }
   }
 
-  findFilmById(id: string): ScheduleAnswer | undefined {
-    const schedule = this.filmRepository.findById(id);
+  // Функция для получения фильма по ID и его расписания
+  // Асинхронная функция для получения фильма по ID и его расписания
+  async findFilmById(id: string): Promise<ScheduleAnswer | undefined> {
+    try {
+      const schedules = await this.mongoRepository.findById(id); // Ждем результат от mongoRepository
 
-    if (schedule) {
-      return {
-        total: schedule.length,
-        items: schedule,
-      };
-    } else return undefined;
+      if (schedules) {
+        return {
+          total: schedules.length, // Количество сеансов
+          items: schedules, // Сами сеансы
+        };
+      } else {
+        return undefined; // Если фильм не найден, возвращаем undefined
+      }
+    } catch (error) {
+      console.error('Error fetching film by ID:', error);
+      return undefined; // В случае ошибки также возвращаем undefined
+    }
   }
 }
