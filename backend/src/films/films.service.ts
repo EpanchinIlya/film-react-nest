@@ -9,10 +9,7 @@ export class FilmsService {
   ) {}
 
   findAllFilms(): FilmsAnswer {
-    const films = this.filmRepository
-      .findAll()
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .map(({ schedule: _, ...other }) => other);
+    const films = this.filmRepository.findAll();
 
     return {
       total: films.length,

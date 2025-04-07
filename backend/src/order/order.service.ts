@@ -1,9 +1,13 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 
 import { FILM_REPOSITORY, FilmRepository } from 'src/repository/filmRepository';
 import { OrderAnswer, OrderDTO } from './dto/order.dto';
 import { v4 as uuid } from 'uuid';
-
 
 @Injectable()
 export class OrderService {
@@ -25,16 +29,15 @@ export class OrderService {
       const taken = session.taken.find(
         (item) => item === `${ticket.row}:${ticket.seat}`,
       );
-      if (taken) throw new NotFoundException(`Выбранное место уже занято`);
-      else{
-       this.filmRepository.takeSeat(
+      if (taken) throw new ConflictException('Выбранное место уже занято');
+      else {
+        this.filmRepository.takeSeat(
           ticket.film,
           ticket.session,
           ticket.row,
           ticket.seat,
         );
-       }
-       
+      }
     });
 
     const fullTickets = tickets.map(

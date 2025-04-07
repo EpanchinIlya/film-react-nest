@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Film, Schedule } from 'src/films/dto/films.dto';
+import { FilmDto, Schedule } from 'src/films/dto/films.dto';
 import { FilmRepository } from '../filmRepository';
-
-
 
 @Injectable()
 export class MemoryRepository implements FilmRepository {
@@ -593,19 +591,16 @@ export class MemoryRepository implements FilmRepository {
     return undefined as any;
   }
 
-  findAll(): Film[] {
+  findAll(): FilmDto[] {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return this.films;
+    return this.films.map(({ schedule: _, ...other }) => other);
   }
 
-  takeSeat(filmId: string, sessionId: string, row: number, seat: number){
-    const film = this.films.find(f => f.id === filmId);
-    const session = film.schedule.find(s => s.id === sessionId);
+  takeSeat(filmId: string, sessionId: string, row: number, seat: number) {
+    const film = this.films.find((f) => f.id === filmId);
+    const session = film.schedule.find((s) => s.id === sessionId);
     const seatKey = `${row}:${seat}`;
-    console.log(seatKey);  
+    console.log(seatKey);
     session.taken.push(seatKey);
-    
-    
-
   }
 }
