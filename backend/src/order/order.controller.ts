@@ -8,8 +8,6 @@ export class OrderController {
 
   @Post()
   async create(@Body() body: OrderDTO) {
-    console.log(body);
-
     try {
       const orderSuccess = await this.orderService.createOrder(body); // Ждем завершения асинхронного метода
       return orderSuccess; // Возвращаем успешный результат

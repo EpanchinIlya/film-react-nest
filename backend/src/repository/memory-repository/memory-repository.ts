@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { FilmDto, Schedule } from 'src/films/dto/films.dto';
+import { FilmRepository } from '../filmRepository';
 
 @Injectable()
-export class MemoryRepository {
+export class MemoryRepository implements FilmRepository {
   private films = [
     {
       id: '0e33c7f6-27a7-4aa0-8e61-65d7e5effecf',
@@ -582,24 +583,33 @@ export class MemoryRepository {
     },
   ];
 
-  findById(id: string): Schedule[] {
+  async findById(id: string): Promise<Schedule[]> {
     const film = this.films.find((item) => item.id === id);
     if (film) {
       return film.schedule;
     }
-    return undefined as any;
+    return []; // Лучше вернуть пустой массив, чем `undefined as any`
   }
 
-  findAll(): FilmDto[] {
+  async findAll(): Promise<FilmDto[]> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return this.films.map(({ schedule: _, ...other }) => other);
   }
 
-  takeSeat(filmId: string, sessionId: string, row: number, seat: number) {
+  async takeSeat(
+    filmId: string,
+    sessionId: string,
+    row: number,
+    seat: number,
+  ): Promise<boolean> {
     const film = this.films.find((f) => f.id === filmId);
+    if (!film) return false;
+
     const session = film.schedule.find((s) => s.id === sessionId);
+    if (!session) return false;
+
     const seatKey = `${row}:${seat}`;
-    console.log(seatKey);
     session.taken.push(seatKey);
+    return true;
   }
 }

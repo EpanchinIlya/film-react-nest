@@ -40,7 +40,6 @@ export class OrderService {
         throw new ConflictException('Выбранное место уже занято');
       }
 
-      // Если место свободно, заносим его в базу
       await this.mongoRepository.takeSeat(
         ticket.film,
         ticket.session,

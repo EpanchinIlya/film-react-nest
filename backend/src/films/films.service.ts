@@ -1,18 +1,17 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { FilmsAnswer, ScheduleAnswer } from './dto/films.dto';
-import { FILM_REPOSITORY } from 'src/repository/filmRepository';
-import { MongoRepository } from 'src/repository/mongo-repository/mongo-repository';
+import { FILM_REPOSITORY, FilmRepository } from 'src/repository/filmRepository';
 
 @Injectable()
 export class FilmsService {
   constructor(
-    @Inject(FILM_REPOSITORY) private readonly mongoRepository: MongoRepository,
+    @Inject(FILM_REPOSITORY) private readonly filmRepository: FilmRepository,
   ) {}
 
   // Асинхронная функция для получения всех фильмов
   async findAllFilms(): Promise<FilmsAnswer> {
     try {
-      const films = await this.mongoRepository.findAll(); // Ждем результат от mongoRepository
+      const films = await this.filmRepository.findAll(); // Ждем результат от Repository
       return {
         total: films.length, // Общее количество фильмов
         items: films, // Сами фильмы
@@ -27,10 +26,10 @@ export class FilmsService {
   }
 
   // Функция для получения фильма по ID и его расписания
-  // Асинхронная функция для получения фильма по ID и его расписания
+
   async findFilmById(id: string): Promise<ScheduleAnswer | undefined> {
     try {
-      const schedules = await this.mongoRepository.findById(id); // Ждем результат от mongoRepository
+      const schedules = await this.filmRepository.findById(id); // Ждем результат от Repository
 
       if (schedules) {
         return {

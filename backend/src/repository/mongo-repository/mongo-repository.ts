@@ -19,7 +19,7 @@ export class MongoRepository {
     @InjectModel('film') private readonly filmModel: Model<FilmWithScheduleDto>, // Инжектируем модель Film
   ) {}
 
-  // Асинхронная функция для получения фильма по ID с расписанием
+  // Асинхронная функция для получения расписания по ID фильма
   async findById(id: string): Promise<Schedule[] | undefined> {
     try {
       const film = await this.filmModel.findOne({ id }).exec(); // Ищем фильм по ID
@@ -53,9 +53,7 @@ export class MongoRepository {
   ): Promise<boolean> {
     try {
       // Находим фильм по ID
-      const film = await this.filmModel.findOne({ filmId }).exec(); // Ищем фильм по ID
-      console.log(film);
-      console.log('тут ошибка');
+      const film = await this.filmModel.findOne({ id: filmId }).exec(); // Ищем фильм по ID
       if (!film) {
         throw new NotFoundException(`Film with ID ${filmId} not found.`);
       }
