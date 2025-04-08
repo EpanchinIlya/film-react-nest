@@ -38,13 +38,22 @@ export class MongoRepository {
         .select('-schedule -_id -__v')
         .exec();
 
-      // return films;
+      //return films;
 
-      return films.map((film) => ({
-        ...film.toObject(),
-        image: 'images' + film.image, // Добавляем "image" к полю 'image'
-        cover: 'images' + film.cover, // Добавляем "image" к полю 'cover'
-      }));
+      return films.map((film) => {
+        const filmObj = film.toObject();
+        return {
+          id: filmObj.id,
+          rating: filmObj.rating,
+          director: filmObj.director,
+          tags: filmObj.tags,
+          title: filmObj.title,
+          about: filmObj.about,
+          description: filmObj.description,
+          image: filmObj.image,
+          cover: filmObj.cover,
+        };
+      });
     } catch (error) {
       console.error('Error fetching films:', error);
       return []; // Возвращаем пустой массив в случае ошибки
