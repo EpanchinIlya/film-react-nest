@@ -37,7 +37,14 @@ export class MongoRepository {
         .find()
         .select('-schedule -_id -__v')
         .exec();
-      return films; // Возвращаем результат без 'schedule', '_id' и '__v'
+
+      // return films;
+
+      return films.map((film) => ({
+        ...film.toObject(),
+        image: 'images' + film.image, // Добавляем "image" к полю 'image'
+        cover: 'images' + film.cover, // Добавляем "image" к полю 'cover'
+      }));
     } catch (error) {
       console.error('Error fetching films:', error);
       return []; // Возвращаем пустой массив в случае ошибки
