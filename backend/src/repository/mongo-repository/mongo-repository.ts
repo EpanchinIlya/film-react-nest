@@ -50,8 +50,8 @@ export class MongoRepository {
           title: filmObj.title,
           about: filmObj.about,
           description: filmObj.description,
-          image: filmObj.image,
-          cover: filmObj.cover,
+          image: 'image' + filmObj.image,
+          cover: 'image' + filmObj.cover,
         };
       });
     } catch (error) {
