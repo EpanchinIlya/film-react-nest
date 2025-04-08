@@ -33,12 +33,11 @@ export class MongoRepository {
   // Асинхронная функция для получения всех фильмов без расписания
   async findAll(): Promise<FilmDto[]> {
     try {
-      const films = await this.filmModel.find().select('-schedule').exec();
-      return films.map((film) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { schedule, ...filmDto } = film.toObject();
-        return filmDto; // Возвращаем объект FilmDto
-      });
+      const films = await this.filmModel
+        .find()
+        .select('-schedule -_id -__v')
+        .exec();
+      return films; // Возвращаем результат без 'schedule', '_id' и '__v'
     } catch (error) {
       console.error('Error fetching films:', error);
       return []; // Возвращаем пустой массив в случае ошибки
