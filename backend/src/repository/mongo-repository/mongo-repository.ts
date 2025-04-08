@@ -33,11 +33,7 @@ export class MongoRepository {
   // Асинхронная функция для получения всех фильмов без расписания
   async findAll(): Promise<FilmDto[]> {
     try {
-      const films = await this.filmModel
-        .find()
-        //.select('-schedule -_id -__v')
-        .select('-_id -__v')
-        .exec();
+      const films = await this.filmModel.find().select('-_id -__v').exec();
 
       //return films;
 
