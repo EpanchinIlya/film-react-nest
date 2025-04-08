@@ -39,7 +39,6 @@ export class MongoRepository {
 
       return films.map((film) => {
         const filmObj = film.toObject();
-        console.log(filmObj);
         return {
           id: filmObj.id,
           rating: filmObj.rating,
