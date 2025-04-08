@@ -35,13 +35,15 @@ export class MongoRepository {
     try {
       const films = await this.filmModel
         .find()
-        .select('-schedule -_id -__v')
+        //.select('-schedule -_id -__v')
+        .select('-_id -__v')
         .exec();
 
       //return films;
 
       return films.map((film) => {
         const filmObj = film.toObject();
+        console.log(filmObj);
         return {
           id: filmObj.id,
           rating: filmObj.rating,
@@ -50,8 +52,9 @@ export class MongoRepository {
           title: filmObj.title,
           about: filmObj.about,
           description: filmObj.description,
-          image: 'images' + filmObj.image,
-          cover: 'images' + filmObj.cover,
+          image: filmObj.image,
+          cover: filmObj.cover,
+          schedule: filmObj.schedule,
         };
       });
     } catch (error) {
