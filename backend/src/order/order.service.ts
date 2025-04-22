@@ -5,15 +5,15 @@ import {
   ConflictException,
 } from '@nestjs/common';
 
-import { FILM_REPOSITORY } from 'src/repository/filmRepository';
+import { FILM_REPOSITORY, FilmRepository } from 'src/repository/filmRepository';
 import { OrderAnswer, OrderDTO } from './dto/order.dto';
 import { v4 as uuid } from 'uuid';
-import { MongoRepository } from 'src/repository/mongo-repository/mongo-repository';
+
 
 @Injectable()
 export class OrderService {
   constructor(
-    @Inject(FILM_REPOSITORY) private readonly mongoRepository: MongoRepository,
+    @Inject(FILM_REPOSITORY) private readonly filmRepository: FilmRepository,
   ) {}
 
   async createOrder(body: OrderDTO): Promise<OrderAnswer> {
@@ -21,7 +21,7 @@ export class OrderService {
 
     // Обрабатываем каждый билет
     for (const ticket of tickets) {
-      const schedule = await this.mongoRepository.findById(ticket.film); // Асинхронно получаем фильм по ID
+      const schedule = await this.filmRepository.findById(ticket.film); // Асинхронно получаем фильм по ID
       if (!schedule) {
         throw new NotFoundException(`Такого фильма нет в показе кинотеатра`);
       }
@@ -40,7 +40,7 @@ export class OrderService {
         throw new ConflictException('Выбранное место уже занято');
       }
 
-      await this.mongoRepository.takeSeat(
+      await this.filmRepository.takeSeat(
         ticket.film,
         ticket.session,
         ticket.row,

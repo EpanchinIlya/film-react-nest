@@ -6,7 +6,7 @@ import { FilmsController } from './films/films.controller';
 import { OrderController } from './order/order.controller';
 import { OrderService } from './order/order.service';
 import { FilmsService } from './films/films.service';
-//import { MemoryRepository } from './repository/memory-repository/memory-repository';
+import { MemoryRepository } from './repository/memory-repository/memory-repository';
 import { MongoRepository } from './repository/mongo-repository/mongo-repository';
 import { FILM_REPOSITORY } from './repository/filmRepository';
 import { MongooseModule } from '@nestjs/mongoose';
