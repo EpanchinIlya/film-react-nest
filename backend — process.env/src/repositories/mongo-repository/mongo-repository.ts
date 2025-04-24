@@ -12,9 +12,10 @@ import {
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { FilmRepository } from '../filmRepository';
 
 @Injectable()
-export class MongoRepository {
+export class MongoRepository implements FilmRepository {
   constructor(
     @InjectModel('film') private readonly filmModel: Model<FilmWithScheduleDto>, // Инжектируем модель Film
   ) {}
