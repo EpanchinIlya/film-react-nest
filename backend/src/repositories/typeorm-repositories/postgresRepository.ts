@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Injectable,
   NotFoundException,
@@ -29,7 +28,11 @@ export class PostgresRepository implements FilmRepository {
         relations: ['schedules'],
       });
       if (film) {
-        return film.schedules.map((entity) => {
+        const sortedSchedules = film.schedules.sort((a, b) => {
+          return new Date(a.daytime).getTime() - new Date(b.daytime).getTime();
+        });
+
+        return sortedSchedules.map((entity) => {
           return this.toScheduleDto(entity);
         });
       } else return undefined;
@@ -42,7 +45,11 @@ export class PostgresRepository implements FilmRepository {
   // Асинхронная функция для получения всех фильмов без расписания
   async findAll(): Promise<FilmDto[]> {
     try {
-      const films = await this.filmRepository.find();
+      const films = await this.filmRepository.find({
+        order: {
+          title: 'ASC',
+        },
+      });
       if (films) {
         return films.map((entity) => {
           return this.toFilmDto(entity);
@@ -64,7 +71,7 @@ export class PostgresRepository implements FilmRepository {
   toScheduleDto(entity: ScheduleEntity): Schedule {
     return {
       ...entity,
-      taken: entity.taken.split(', '),
+      taken: entity.taken.split(','),
     };
   }
 
@@ -104,8 +111,6 @@ export class PostgresRepository implements FilmRepository {
 
       // Сохраняем обновленный фильм в базе данных
       await this.scheduleRepository.save(session);
-      console.log('запись в ==============================================');
-      console.log(session.id);
 
       // Возвращаем true, если операция прошла успешно
       return true;

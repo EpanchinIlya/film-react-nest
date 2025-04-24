@@ -1,16 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-// async function bootstrap() {
-//   const app = await NestFactory.create(AppModule);
-//   app.setGlobalPrefix('api/afisha');
-//   app.enableCors();
-//   app.listen(3000, () => {
-//     console.log(`Сервер запущен на порту 3000`);
-//   });
-// }
-// bootstrap();
-
 import { ConfigProviderModule } from './config-provider-module/config-provider.module';
 import { AppConfig } from './config-provider-module/app.config.provider';
 
