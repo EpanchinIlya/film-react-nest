@@ -39,7 +39,7 @@ import { TypeormRepositoriesModule } from './repositories/typeorm-repositories/t
 export class AppModule {
   static register(config: AppConfig): DynamicModule {
     console.log("  ============   Устанавливаем связь с базой: " + config.database.driver+ "     =======================");
-
+   // console.log("  ============   по строке: " + config.database.url+ "     =======================");
     return {
       module: AppModule,
       imports: [

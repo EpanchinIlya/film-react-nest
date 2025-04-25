@@ -13,8 +13,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule.register(appConfig));
   app.setGlobalPrefix('api/afisha');
   app.enableCors();
-  app.listen(3000, () => {
-    console.log(`Сервер запущен на порту 3000`);
+  app.listen(appConfig.database.server_port, () => {
+    console.log(`Сервер запущен на порту ${appConfig.database.server_port}`);
   });
 }
 

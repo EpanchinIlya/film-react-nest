@@ -9,7 +9,7 @@ export const typeOrmConfig = async (
   return {
     type: config.database.driver as 'postgres', // Тип базы данных
     host: config.database.host,
-    port: config.database.port,
+    port: config.database.database_port,
     username: config.database.user,
     password: config.database.password,
     database: config.database.database_name,
