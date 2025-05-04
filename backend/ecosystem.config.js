@@ -24,7 +24,8 @@ module.exports = {
       repo: DEPLOY_REPO,
       path: DEPLOY_PATH,
       key: 'C://Users/Work/.ssh/id_rsa_pm2',
-      'pre-deploy': `scp C://Users/Work/.ssh/id_rsa_pm2 ./*.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/backend`,
+      //'pre-deploy': `scp C://Users/Work/.ssh/id_rsa_pm2 C:\Project\film-react-nest\backend/.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/backend`,
+      'pre-deploy': `scp C:/Users/Work/.ssh/id_rsa_pm2 C:/Project/film-react-nest/backend/.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/backend`,
       'post-deploy': `
       cd ${DEPLOY_PATH}/current/backend &&
       npm install &&
