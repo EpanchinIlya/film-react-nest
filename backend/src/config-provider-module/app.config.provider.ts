@@ -13,7 +13,7 @@ export const configProvider = {
         process.env.MONGO_DATABASE_PORT +
         '/' +
         process.env.DATABASE_NAME,
-      //url: process.env.MONGO_DATABASE_URL,
+
       user: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       host: process.env.DATABASE_HOST ?? 'localhost',
@@ -21,11 +21,19 @@ export const configProvider = {
       database_name: process.env.DATABASE_NAME,
       server_port: process.env.SERVER_PORT ?? 3000,
     },
+    logger: {
+      logger: process.env.LOGGER_TYPE ?? 'devLogger',
+    },
   },
 };
 
 export interface AppConfig {
   database: AppConfigDatabase;
+  logger: AppConfigLogger;
+}
+
+export interface AppConfigLogger {
+  logger: string;
 }
 
 export interface AppConfigDatabase {

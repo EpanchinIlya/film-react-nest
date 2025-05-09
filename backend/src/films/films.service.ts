@@ -12,9 +12,14 @@ export class FilmsService {
   ) {}
 
   // Асинхронная функция для получения всех фильмов
+
   async findAllFilms(): Promise<FilmsAnswer> {
     try {
       const films = await this.filmRepository.findAll();
+      // Logger.log('log');
+      // Logger.error('error');
+      // Logger.debug('debug');
+      // Logger.verbose('verbose');
       return {
         total: films.length, // Общее количество фильмов
         items: films, // Сами фильмы
