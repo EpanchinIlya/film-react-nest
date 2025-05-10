@@ -12,7 +12,6 @@ export class OrderController {
       const orderSuccess = await this.orderService.createOrder(body); // Ждем завершения асинхронного метода
       return orderSuccess; // Возвращаем успешный результат
     } catch (error) {
-      console.error('Error creating order:', error);
       throw error; // Выбрасываем ошибку, если что-то пошло не так
     }
   }
