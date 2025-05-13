@@ -4,6 +4,9 @@ env:
 
 name: Create images 
 on: [push]
+permissions:
+  contents: read
+  packages: write # Добавлено разрешение для записи в GHCR
 jobs:
   build-and-publish-latest:
     runs-on: ubuntu-latest
