@@ -2,7 +2,7 @@ name: test-workflow
 on:
   push:
     branches:
-      - 'review-2'
+      - '**'
 jobs:
   test-job:
     runs-on: ubuntu-latest
