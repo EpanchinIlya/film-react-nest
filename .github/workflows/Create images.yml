@@ -2,7 +2,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend 
 
-name: publish
+name: Create images 
 on: [push]
 jobs:
   build-and-publish-latest:
