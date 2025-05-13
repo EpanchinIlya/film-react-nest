@@ -3,6 +3,7 @@ on: [push]
 jobs:
   test-job:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/review-2'
     steps:
       - name: Print a message
         run: echo "Hello from GitHub Actions!"
