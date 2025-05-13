@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - '**'
+    tags:
+      - '**'
 jobs:
   test-job:
     runs-on: ubuntu-latest
