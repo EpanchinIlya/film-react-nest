@@ -5,7 +5,7 @@ export const configProvider = {
   provide: 'CONFIG',
   useValue: <AppConfig>{
     database: {
-      driver: process.env.DATABASE_DRIVER ?? 'postgres',
+      driver: process.env.DATABASE_DRIVER ?? 'memory',
       url:
         'mongodb://' +
         process.env.DATABASE_HOST +
