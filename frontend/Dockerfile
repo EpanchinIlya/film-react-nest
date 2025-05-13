@@ -17,5 +17,6 @@ COPY --from=build /app/dist /app/dist
 
 
 
+# FROM alpine/git AS static_files
 
 
