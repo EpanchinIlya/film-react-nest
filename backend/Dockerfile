@@ -26,7 +26,7 @@ COPY --from=builder /var/www/app/package*.json ./
 
 RUN npm install --only=production
 
-# Копируем собранные файлы проекта
+
 COPY --from=builder /var/www/app/dist ./dist
 COPY --from=builder /var/www/app/public ./public
 

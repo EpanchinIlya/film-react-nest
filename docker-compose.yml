@@ -1,15 +1,4 @@
 services:
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #    # args:
-  #    #  VITE_API_URL: "//zorox112.ru/api"
-  #   container_name: frontend
-  #   networks:
-  #     - webnet
-  #   volumes:
-  #     - frontend_dist:/app/dist
 
   frontend:
     build:
@@ -24,10 +13,7 @@ services:
     - webnet
     env_file:
     - ./frontend/.env
-    # ports:
-    # - "80:80"
-
-
+  
 
 
   backend:
@@ -59,8 +45,6 @@ services:
       - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # - ./backend/test/prac.init.sql:/docker-entrypoint-initdb.d/prac.init.sql:ro
-      # - ./backend/test/prac.init01.sql:/docker-entrypoint-initdb.d/01.prac.init01.sql:ro
       - ./backend/test/prac.init02.sql:/docker-entrypoint-initdb.d/02.prac.init02.sql:ro
       - ./backend/test/prac.films.sql:/docker-entrypoint-initdb.d/03.prac.films.sql:ro
       - ./backend/test/prac.shedules.sql:/docker-entrypoint-initdb.d/04.prac.shedules.sql:ro
@@ -76,8 +60,6 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     image: film-react-nest:nginx
-    # image: ghcr.io/${OWNER}/film-react-nest:nginx-latest
-    # container_name: nginx
     restart: always
     ports:
       - "8081:80"
