@@ -2,7 +2,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend 
 
-name: Create images 
+name: Create frontend image 
 on: [push]
 permissions:
   contents: read

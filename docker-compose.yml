@@ -45,15 +45,27 @@ services:
     #   - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./backend/test/prac.init02.sql:/docker-entrypoint-initdb.d/02.prac.init02.sql:ro
-      - ./backend/test/prac.films.sql:/docker-entrypoint-initdb.d/03.prac.films.sql:ro
-      - ./backend/test/prac.shedules.sql:/docker-entrypoint-initdb.d/04.prac.shedules.sql:ro
+      # - для локального автоматического наполнения базы
+      # - ./backend/test/prac.init02.sql:/docker-entrypoint-initdb.d/02.prac.init02.sql:ro
+      # - ./backend/test/prac.films.sql:/docker-entrypoint-initdb.d/03.prac.films.sql:ro
+      # - ./backend/test/prac.shedules.sql:/docker-entrypoint-initdb.d/04.prac.shedules.sql:ro
 
-    env_file:
-        - ./backend/.env
     networks:
     - webnet
 
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADM_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADM_PASS}
+    ports:
+      - "8080:80"
+    networks:
+       - webnet
+ 
 
   nginx:
     build:
