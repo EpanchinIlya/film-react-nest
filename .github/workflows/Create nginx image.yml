@@ -1,6 +1,6 @@
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/frontend 
+  IMAGE_NAME: ${{ github.repository }}/nginx 
 
 name: Create inginx image
 on: [push]
