@@ -3,9 +3,9 @@
 services:
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./frontend
+    #   dockerfile: Dockerfile
     image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/frontend:review-2 
     # image: film-react-nest:front
     container_name: frontend
@@ -72,9 +72,9 @@ services:
  
 
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./nginx
+    #   dockerfile: Dockerfile
     # image: film-react-nest:nginx
     image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/nginx:review-2 
     restart: always
