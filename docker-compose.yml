@@ -1,22 +1,19 @@
 services:
 
   frontend:
-    # build:
-    #   context: ./frontend
-    #   dockerfile: Dockerfile
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/frontend:review-2 
     # image: film-react-nest:front
     container_name: frontend
-    environment:
-      VITE_API_URL: ${VITE_API_URL}
-      VITE_CDN_URL: ${VITE_CDN_URL}
     restart: unless-stopped
     volumes:
     - frontend_dist:/app/dist 
     networks:
     - webnet
-    # env_file:
-    # - ./frontend/.env
+    env_file:
+    - ./frontend/.env
   
 
 
@@ -46,14 +43,14 @@ services:
      POSTGRES_DB: ${DATABASE_NAME}
      POSTGRES_USER: ${DATABASE_USERNAME}
      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    # ports:
-    #   - "5435:5432"
+    ports:
+      - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # - для локального автоматического наполнения базы
-      - ./backend/test/prac.init02.sql:/docker-entrypoint-initdb.d/02.prac.init02.sql:ro
-      - ./backend/test/prac.films.sql:/docker-entrypoint-initdb.d/03.prac.films.sql:ro
-      - ./backend/test/prac.shedules.sql:/docker-entrypoint-initdb.d/04.prac.shedules.sql:ro
+      # - ./backend/test/prac.init02.sql:/docker-entrypoint-initdb.d/02.prac.init02.sql:ro
+      # - ./backend/test/prac.films.sql:/docker-entrypoint-initdb.d/03.prac.films.sql:ro
+      # - ./backend/test/prac.shedules.sql:/docker-entrypoint-initdb.d/04.prac.shedules.sql:ro
 
     networks:
     - webnet
