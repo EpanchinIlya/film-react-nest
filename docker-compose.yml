@@ -1,0 +1,100 @@
+# Установка docker на сервер https://docs.docker.com/engine/install/ubuntu/
+
+services:
+
+  frontend:
+    # build:
+    #   context: ./frontend
+    #   dockerfile: Dockerfile
+    image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/frontend:review-2 
+    # image: film-react-nest:front
+    container_name: frontend
+    restart: unless-stopped
+    volumes:
+    - frontend_dist:/app/dist 
+    networks:
+    - webnet
+    env_file:
+    - ./frontend/.env
+  
+
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/backend:review-2 
+    # image: film-react-nest:backend
+    container_name: backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - postgres
+    networks:
+      - webnet
+    ports:
+      - "3000:3000"
+
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+     POSTGRES_DB: ${DATABASE_NAME}
+     POSTGRES_USER: ${DATABASE_USERNAME}
+     POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # - для локального автоматического наполнения базы
+      # - ./backend/test/prac.init02.sql:/docker-entrypoint-initdb.d/02.prac.init02.sql:ro
+      # - ./backend/test/prac.films.sql:/docker-entrypoint-initdb.d/03.prac.films.sql:ro
+      # - ./backend/test/prac.shedules.sql:/docker-entrypoint-initdb.d/04.prac.shedules.sql:ro
+
+    networks:
+    - webnet
+
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADM_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADM_PASS}
+    ports:
+      - "8080:80"
+    networks:
+       - webnet
+ 
+
+  nginx:
+    # build:
+    #   context: ./nginx
+    #   dockerfile: Dockerfile
+    # image: film-react-nest:nginx
+    image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/nginx:review-2 
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - frontend_dist:/var/www/frontend:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - webnet
+
+
+
+
+volumes:
+  postgres_data:
+  frontend_dist:
+
+networks:
+  webnet: {}

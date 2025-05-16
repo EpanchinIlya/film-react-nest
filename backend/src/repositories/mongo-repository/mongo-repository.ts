@@ -17,21 +17,19 @@ import { FilmRepository } from '../filmRepository';
 @Injectable()
 export class MongoRepository implements FilmRepository {
   constructor(
-    @InjectModel('film') private readonly filmModel: Model<FilmWithScheduleDto>, // Инжектируем модель Film
+    @InjectModel('film') private readonly filmModel: Model<FilmWithScheduleDto>,
   ) {}
 
-  // Асинхронная функция для получения расписания по ID фильма
   async findById(id: string): Promise<Schedule[] | undefined> {
     try {
-      const film = await this.filmModel.findOne({ id }).exec(); // Ищем фильм по ID
-      return film ? film.schedule : undefined; // Возвращаем расписание или undefined, если фильм не найден
+      const film = await this.filmModel.findOne({ id }).exec();
+      return film ? film.schedule : undefined;
     } catch (error) {
       console.error('Error finding film by ID:', error);
-      return undefined; // Возвращаем undefined в случае ошибки
+      return undefined;
     }
   }
 
-  // Асинхронная функция для получения всех фильмов без расписания
   async findAll(): Promise<FilmDto[]> {
     try {
       const films = await this.filmModel.find().select('-_id -__v').exec();
@@ -55,7 +53,7 @@ export class MongoRepository implements FilmRepository {
       });
     } catch (error) {
       console.error('Error fetching films:', error);
-      return []; // Возвращаем пустой массив в случае ошибки
+      return [];
     }
   }
 
@@ -66,7 +64,6 @@ export class MongoRepository implements FilmRepository {
     seat: number,
   ): Promise<boolean> {
     try {
-      // Находим фильм по ID
       const film = await this.filmModel.findOne({ id: filmId }).exec(); // Ищем фильм по ID
       if (!film) {
         throw new NotFoundException(`Film with ID ${filmId} not found.`);
