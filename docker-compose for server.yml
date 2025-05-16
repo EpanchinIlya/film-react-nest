@@ -1,3 +1,6 @@
+# установка docker на server
+# https://docs.docker.com/engine/install/ubuntu/
+
 services:
 
   frontend:
@@ -7,7 +10,7 @@ services:
     volumes:
     - frontend_dist:/app/dist
     networks:
-    - webnet
+    - frontend_webnet
 
 
 
@@ -18,9 +21,10 @@ services:
     depends_on:
       - postgres
     networks:
-      - webnet
-    ports:
-      - "3000:3000"
+      - backend_webnet
+    # ports:
+    #   - "3000:3000"
+    
 
 
   postgres:
@@ -36,7 +40,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-    - webnet
+    - backend_webnet
+    - admin_webnet
+
 
 
   pgadmin:
@@ -49,7 +55,7 @@ services:
    # ports:
    #   - "8080:80"
     networks:
-       - webnet
+       - admin_webnet
 
   nginx:
     image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/nginx:review-2
@@ -62,11 +68,14 @@ services:
       - frontend
       - backend
     networks:
-      - webnet
+      - frontend_webnet
+      - backend_webnet
 
 volumes:
   postgres_data:
   frontend_dist:
 
 networks:
-  webnet: {}
+  frontend_webnet: {}
+  backend_webnet: {}
+  admin_webnet: {}    
