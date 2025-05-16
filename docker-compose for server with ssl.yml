@@ -1,0 +1,88 @@
+version: '3.8'
+services:
+
+  frontend:
+    image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/frontend:review-2
+    container_name: frontend
+    restart: unless-stopped
+    volumes:
+      - frontend_dist:/app/dist
+    networks:
+      - webnet
+
+  backend:
+    image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/backend:review-2
+    container_name: backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    networks:
+      - webnet
+    ports:
+      - "3000:3000"
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - webnet
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADM_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADM_PASS}
+    ports:
+      - "8080:80"
+    networks:
+      - webnet
+
+  nginx:
+    image: ghcr.io/${GITHUB_ACCOUNT}/film-react-nest/nginx:review-2
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443" 
+    volumes:
+      - frontend_dist:/var/www/frontend:ro
+      - certbot_certs:/etc/nginx/certs 
+    depends_on:
+      - frontend
+      - backend
+      - certbot 
+    networks:
+      - webnet
+
+  certbot:
+    build: ./certbot
+    container_name: certbot
+    volumes:
+      - certbot_certs:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    entrypoint: >
+      sh -c "trap exit TERM; while :; do
+        certbot renew --webroot -w /var/www/certbot --email your_email@example.com --agree-tos --no-interactive --domains your_domain.com && nginx -s reload || echo 'Certbot failed to renew.';
+        sleep 12h;
+      done & wait"
+    networks:
+      - webnet
+
+volumes:
+  postgres_data:
+  frontend_dist:
+  certbot_certs: 
+  certbot_www:   
+
+networks:
+  webnet: {}
